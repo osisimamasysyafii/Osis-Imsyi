@@ -428,9 +428,10 @@ footer{background:var(--hijau); color:var(--gading); padding:70px 0 30px;}
 }
 
 /* ==================== ADMIN SYSTEM STYLES ==================== */
-.admin-fab{position:fixed; bottom:26px; left:26px; z-index:800; width:52px; height:52px; background:var(--hijau); color:var(--gading); border:2px solid var(--emas-terang); border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow-lg); cursor:pointer; transition:transform .3s var(--ease), background .3s var(--ease);}
-.admin-fab:hover{transform:scale(1.08) rotate(10deg); background:var(--hijau-terang);}
-.admin-fab i{font-size:20px;}
+.header-actions{display:flex; align-items:center; gap:10px;}
+.admin-header-btn{display:flex; align-items:center; justify-content:center; flex-shrink:0; width:40px; height:40px; border-radius:50%; border:1.5px solid var(--hijau); background:transparent; color:var(--hijau); cursor:pointer; transition:border-color .4s var(--ease), background .4s var(--ease), color .4s var(--ease);}
+.admin-header-btn:hover{border-color:var(--emas-teks); background:rgba(180,134,58,.08); color:var(--emas-teks);}
+.admin-header-btn i{font-size:15px;}
 body.editing [contenteditable="true"]{outline:1px dashed var(--emas-teks); outline-offset:4px; background:rgba(217,179,112,0.1); cursor:text; border-radius:2px;}
 body.editing [contenteditable="true"]:hover{outline-style:solid; background:rgba(217,179,112,0.2);}
 body.editing .editable-section{position:relative;}
@@ -2540,7 +2541,10 @@ body.editing .edit-badge{display:flex;}
       <a href="#beranda">Beranda</a><a href="#profil">Profil</a><a href="#struktur">Struktur</a><a href="#program">Program Kerja</a><a href="#jadwal">Jadwal Harian</a><a href="#galeri">Galeri</a><a href="#faq">FAQ</a><a href="#kontak">Kontak</a><a href="#mediadakwah">Media Dakwah</a>
       <span class="nav-indicator" id="navIndicator"></span>
     </nav>
-    <button class="menu-toggle" id="menuToggle" aria-label="Buka menu"><span class="bars"><span></span><span></span><span></span></span></button>
+    <div class="header-actions">
+      <button class="admin-header-btn" id="adminFab" aria-label="Admin" title="Admin Panel"><i class="fas fa-lock"></i></button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Buka menu"><span class="bars"><span></span><span></span><span></span></span></button>
+    </div>
   </div>
 </header>
 
@@ -3584,9 +3588,6 @@ body.editing .edit-badge{display:flex;}
 
 <!-- ==================== ADMIN SYSTEM UI ==================== -->
 <div class="edit-badge">Mode Edit Aktif</div>
-<button class="admin-fab" id="adminFab" title="Admin Panel">
-  <i class="fas fa-lock"></i>
-</button>
 
 <div class="admin-modal" id="adminModal" onclick="if(event.target===this) closeAdmin();">
   <div class="admin-modal-box">
@@ -4569,8 +4570,9 @@ function showPage(id) {
     const osisFooter = document.getElementById('osisFooter');
     const osisScrim = document.getElementById('scrim');
     const osisMobilePanel = document.getElementById('mobilePanel');
-    // adminFab & backTop itu tombol fixed terpisah (bukan bagian dari header/footer),
-    // jadi harus disembunyikan manual juga supaya gak numpuk di atas Media Dakwah
+    // adminFab sekarang nempel di dalam header OSIS (ikut kesembunyi otomatis
+    // bareng header pas Media Dakwah aktif). backTop tetap tombol fixed terpisah,
+    // jadi tetap harus disembunyikan manual biar gak numpuk di atas Media Dakwah
     // (Media Dakwah sudah punya tombol admin/lock sendiri di header-nya sendiri).
     const osisAdminFab = document.getElementById('adminFab');
     const osisBackTop = document.getElementById('backTop');

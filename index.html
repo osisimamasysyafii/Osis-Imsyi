@@ -4561,7 +4561,7 @@ function showPage(id) {
   const currentActive = document.querySelector('.page-section.active-page');
   function activate() {
     PAGE_IDS.forEach(pid => { const el = document.getElementById(pid); if(el) el.classList.toggle('active-page', pid === id); });
-    document.querySelectorAll('#primaryNav a, #mobilePanel a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#'+id));
+    document.querySelectorAll('#primaryNav a, #mobilePanel a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '/'+id));
     // Saat Media Dakwah aktif, sembunyikan header & footer OSIS supaya jadi tampilan
     // "full" Media Dakwah sendiri (gak dobel/bentrok sama header-footer OSIS).
     // Sebaliknya, saat balik ke halaman OSIS lain, tampilkan lagi header & footer OSIS.

@@ -2559,7 +2559,7 @@ body.editing .edit-badge{display:flex;}
     <div>
       <div class="doc-number" data-edit="hero.doc" contenteditable="false">Tahun Ajaran <b>1448–1449 H</b> &nbsp;/&nbsp; <b>2025–2026 M</b> · Pondok Pesantren Imam Asy - Syafii</div>
       <h1 data-edit="hero.title" contenteditable="false">Menghimpun santri dalam <em>ukhuwah</em> dan karya.</h1>
-      <p class="sub" data-edit="hero.subtitle" contenteditable="false">OSIS Pondok Pesantren Imam Asy - Syafii menaungi kegiatan ubudiyah, tahfidz, bahasa, dan dakwah santri putra maupun putri — dari asrama hingga panggung muhadhoroh.</p>
+      <p class="sub" data-edit="hero.subtitle" contenteditable="false">OSIS Pondok Pesantren Imam Asy - Syafii menaungi kegiatan ibadah, tahfidz, bahasa, dan dakwah santri putra maupun putri — dari asrama hingga panggung muhadhoroh.</p>
       <div class="hero-ctas">
         <a href="/program" class="btn btn-solid">Lihat Program Kerja</a>
         <a href="/kontak" class="btn btn-ghost">Sampaikan Aspirasi</a>
@@ -3652,7 +3652,7 @@ body.editing .edit-badge{display:flex;}
             <input type="hidden" id="progId">
             <div class="admin-form-group"><label>Judul Program</label><input type="text" id="progTitle"></div>
             <div class="admin-form-group"><label>Deskripsi</label><textarea id="progDesc"></textarea></div>
-            <div class="admin-form-group"><label>Bidang</label><select id="progBidang"><option value="ubudiyah">Ubudiyah</option><option value="tahfidz">Tahfidz</option><option value="bahasa">Bahasa</option><option value="dakwah">Dakwah</option><option value="keamanan">Keamanan</option><option value="kebersihan">Kebersihan</option><option value="kesehatan">Kesehatan</option></select></div>
+            <div class="admin-form-group"><label>Bidang</label><select id="progBidang"><option value="ibadah">Ibadah</option><option value="tahfidz">Tahfidz</option><option value="bahasa">Bahasa</option><option value="dakwah">Dakwah</option><option value="keamanan">Keamanan</option><option value="kebersihan">Kebersihan</option><option value="kesehatan">Kesehatan</option></select></div>
             <div class="admin-form-group"><label>Status</label><select id="progStatus"><option value="terlaksana">Terlaksana</option><option value="berlangsung">Berlangsung</option><option value="direncanakan">Direncanakan</option></select></div>
             <button class="btn btn-solid" onclick="saveProgram()"><i class="fas fa-save"></i> Simpan</button>
             <button class="btn btn-ghost" onclick="hideProgramForm()">Batal</button>
@@ -3742,7 +3742,7 @@ const DEFAULT_STATE = {
   ],
   misi: [
     {num: "01", title: "Membina Ukhuwah", desc: "Menjaga ukhuwah islamiyah dan kedisiplinan di lingkungan asrama."},
-    {num: "02", title: "Mendampingi Ibadah", desc: "Mendampingi kegiatan ubudiyah, tahfidz, dan kajian kitab kuning."},
+    {num: "02", title: "Mendampingi Ibadah", desc: "Mendampingi kegiatan ibadah, tahfidz, dan kajian kitab kuning."},
     {num: "03", title: "Mengasah Bahasa", desc: "Mengembangkan kemampuan bahasa Arab dan Inggris santri sehari-hari."},
     {num: "04", title: "Melatih Kepemimpinan", desc: "Menumbuhkan jiwa kepemimpinan melalui organisasi dan muhadhoroh."},
     {num: "05", title: "Menjaga Lingkungan", desc: "Merawat kebersihan, ketertiban, dan kesehatan lingkungan pondok."}
@@ -3753,7 +3753,7 @@ const DEFAULT_STATE = {
     {role: "Ketua Putri", name: "Aisyah Zahra R.", tugas: "Memimpin dan mengoordinasikan program kerja santri putri.|Memimpin musyawarah pengurus tiap pekan.|Mewakili santri putri dalam forum pondok.", type: "lead"},
     {role: "Sekretaris", name: "Hilman A.", tugas: "Mencatat dan mengarsipkan dokumen kegiatan santri.|Menyusun surat-menyurat organisasi.|Membuat notulen setiap musyawarah.", type: "normal"},
     {role: "Bendahara", name: "Nur Fadhilah", tugas: "Mengelola dan mencatat kas organisasi santri.|Menyusun laporan keuangan tiap kegiatan.|Mengawasi dana infaq dan kas bidang.", type: "normal"},
-    {role: "Ubudiyah", name: "Koordinator Bidang", tugas: "Mengatur imam dan jadwal sholat berjamaah.|Mendampingi tadarus dan qiyamul lail.|Mengoordinasikan peringatan hari besar Islam.", type: "bidang"},
+    {role: "Ibadah", name: "Koordinator Bidang", tugas: "Mengatur imam dan jadwal sholat berjamaah.|Mendampingi tadarus dan qiyamul lail.|Mengoordinasikan peringatan hari besar Islam.", type: "bidang"},
     {role: "Tahfidz", name: "Koordinator Bidang", tugas: "Mengatur jadwal setoran hafalan harian.|Mengoordinasikan wisuda tahfidz per juz.|Mendampingi musabaqah hifzil Qur'an.", type: "bidang"},
     {role: "Bahasa", name: "Koordinator Bidang", tugas: "Mengelola pemberian mufradat harian.|Mengoordinasikan Pekan Bahasa Arab & Inggris.|Mengawasi penerapan bahasa resmi asrama.", type: "bidang"},
     {role: "Dakwah", name: "Koordinator Bidang", tugas: "Menjadwalkan latihan pidato tiga bahasa.|Melatih dai cilik dan MC kegiatan.|Mengoordinasikan Haflah Akhirussanah.", type: "bidang"},
@@ -3762,9 +3762,9 @@ const DEFAULT_STATE = {
     {role: "Kesehatan", name: "Koordinator Bidang", tugas: "Mengelola UKS dan pemeriksaan kesehatan santri.|Menyelenggarakan pekan olahraga dan senam pagi.|Mengoordinasikan donor darah bersama PMI.", type: "bidang"}
   ],
   programs: [
-    {n:'01', bidang:'ubudiyah', title:'Khataman Al-Qur\'an Bulanan', status:'terlaksana', desc:'Kegiatan khataman bersama seluruh santri setiap bulan qomariyah.'},
-    {n:'02', bidang:'ubudiyah', title:'Qiyamul Lail Berjamaah', status:'berlangsung', desc:'Sholat malam berjamaah rutin menjelang waktu Subuh.'},
-    {n:'03', bidang:'ubudiyah', title:'Peringatan Hari Besar Islam', status:'direncanakan', desc:'Perayaan Maulid Nabi, Isra Mi\'raj, dan hari besar lainnya.'},
+    {n:'01', bidang:'ibadah', title:'Khataman Al-Qur\'an Bulanan', status:'terlaksana', desc:'Kegiatan khataman bersama seluruh santri setiap bulan qomariyah.'},
+    {n:'02', bidang:'ibadah', title:'Qiyamul Lail Berjamaah', status:'berlangsung', desc:'Sholat malam berjamaah rutin menjelang waktu Subuh.'},
+    {n:'03', bidang:'ibadah', title:'Peringatan Hari Besar Islam', status:'direncanakan', desc:'Perayaan Maulid Nabi, Isra Mi\'raj, dan hari besar lainnya.'},
     {n:'04', bidang:'tahfidz', title:'Wisuda Tahfidz Juz 30', status:'terlaksana', desc:'Prosesi wisuda bagi santri yang menuntaskan hafalan Juz 30.'},
     {n:'05', bidang:'tahfidz', title:'Setoran Hafalan Harian', status:'berlangsung', desc:'Setoran hafalan rutin kepada musyrif/musyrifah tahfidz.'},
     {n:'06', bidang:'tahfidz', title:'Musabaqah Hifzil Qur\'an', status:'direncanakan', desc:'Lomba hafalan Al-Qur\'an antarasrama dan antarpondok.'},
@@ -4050,7 +4050,7 @@ function bindFaq() {
 function setupFilters() {
   const fBar = document.getElementById('filterBar');
   if(fBar) {
-    fBar.innerHTML = `<button class="filter-btn active" data-filter="semua">Semua</button><button class="filter-btn" data-filter="ubudiyah">Ubudiyah</button><button class="filter-btn" data-filter="tahfidz">Tahfidz</button><button class="filter-btn" data-filter="bahasa">Bahasa</button><button class="filter-btn" data-filter="dakwah">Dakwah</button><button class="filter-btn" data-filter="keamanan">Keamanan</button><button class="filter-btn" data-filter="kebersihan">Kebersihan</button><button class="filter-btn" data-filter="kesehatan">Kesehatan</button>`;
+    fBar.innerHTML = `<button class="filter-btn active" data-filter="semua">Semua</button><button class="filter-btn" data-filter="ibadah">Ibadah</button><button class="filter-btn" data-filter="tahfidz">Tahfidz</button><button class="filter-btn" data-filter="bahasa">Bahasa</button><button class="filter-btn" data-filter="dakwah">Dakwah</button><button class="filter-btn" data-filter="keamanan">Keamanan</button><button class="filter-btn" data-filter="kebersihan">Kebersihan</button><button class="filter-btn" data-filter="kesehatan">Kesehatan</button>`;
     fBar.onclick = e => {
       const btn = e.target.closest('.filter-btn'); if(!btn) return;
       fBar.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));

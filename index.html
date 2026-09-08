@@ -2908,16 +2908,12 @@ body.editing .edit-badge{display:flex;}
                 <p class="backup-note">Import akan menimpa data yang ada saat ini di browser ini. Pastikan sudah backup data terbaru sebelum melakukan restore.</p>
             </div>
 
-            <div class="about reveal">
+            <div class="about reveal about-no-imgs">
                 <div>
                     <span class="eyebrow2">Tentang IMAM - ASY SYAFII</span>
                     <h2>Ruang belajar yang terbuka untuk semua</h2>
                     <p>IMAM - ASY SYAFII hadir sebagai jembatan antara jamaah dan para ustadz di berbagai masjid dan majelis. Kami merangkum jadwal kajian, mendokumentasikan rekaman, dan membuka ruang tanya jawab agar semangat belajar agama tidak terhenti oleh jarak maupun waktu.</p>
                     <p>Seluruh konten dikurasi dengan menjaga adab keilmuan, mengutamakan sumber yang jelas sanad keilmuannya.</p>
-                </div>
-                <div class="about-imgs">
-                    <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?q=80&w=600&auto=format&fit=crop" alt="Jamaah kajian" onerror="this.style.display='none'">
-                    <img src="https://images.unsplash.com/photo-1542816417-0983c9c9ad53?q=80&w=600&auto=format&fit=crop" alt="Kaligrafi Islam" onerror="this.style.display='none'">
                 </div>
             </div>
         </section>
@@ -3528,11 +3524,11 @@ body.editing .edit-badge{display:flex;}
                 <p class="head">Ikuti Kami</p>
                 <div class="social-row">
                     <!-- INSTAGRAM -->
-                    <a href="https://www.instagram.com/annur.dakwah" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                    <a href="https://www.instagram.com/osisimsyi_?stkn=MTBuYml4Mmk3b3V2dA==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                         <i class="fa-brands fa-instagram"></i>
                     </a>
                     <!-- YOUTUBE -->
-                    <a href="https://www.youtube.com/@annur.dakwah" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                    <a href="https://youtube.com/@assunnahlampungaslamtv8589?si=YI8xzOpPhXVEusCc" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
                         <i class="fa-brands fa-youtube"></i>
                     </a>
                     <!-- WHATSAPP GROUP -->
@@ -4876,28 +4872,7 @@ init();
         // Sesi login admin ikut browser (hilang begitu tab/browser ditutup total).
         mdAuth.setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(() => {});
 
-        // ===== DARK MODE (otomatis penuh, tanpa tombol/konfirmasi ke pengunjung) =====
-        // Tidak pakai Firebase / server apapun — cukup jam perangkat pengunjung (Date() bawaan browser).
-        const DARK_HOUR_START = 18; // jam 18.00 (Maghrib) mulai gelap
-        const DARK_HOUR_END = 5;    // jam 05.00 (Subuh) kembali terang
-
-        function isWithinDarkHours() {
-            const hour = new Date().getHours();
-            return (hour >= DARK_HOUR_START || hour < DARK_HOUR_END);
-        }
-
-        function applyAutoDarkMode() {
-            const dark = isWithinDarkHours();
-            document.body.classList.toggle('dark-mode', dark);
-            // FIX: variabel warna dark-mode Media Dakwah di-scope ke #mediaDakwahRoot,
-            // jadi class-nya harus ditaruh di situ juga, bukan cuma di body.
-            const mdRoot = document.getElementById('mediaDakwahRoot');
-            if (mdRoot) mdRoot.classList.toggle('dark-mode', dark);
-        }
-
-        applyAutoDarkMode();
-        // Cek tiap menit supaya tampilan berubah tepat waktu tanpa perlu refresh halaman
-        setInterval(applyAutoDarkMode, 60000);
+        // Fitur mode malam/pagi otomatis sudah dihapus atas permintaan.
 
         // ===== TOAST =====
         function showToast(msg) {

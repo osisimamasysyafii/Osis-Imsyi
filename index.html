@@ -296,11 +296,16 @@ section{padding:110px 0; position:relative;}
 .field.invalid input, .field.invalid select, .field.invalid textarea{border-color:#9A4A2E;}
 .field.invalid .err{display:block; color:#9A4A2E;}
 .char-count{font-size:11px; color:var(--hijau-soft); text-align:right; margin-top:6px; font-family:'Reem Kufi',sans-serif;}
-.form-success{display:none; text-align:center; padding:60px 20px; border:1.3px dashed var(--hijau-terang); border-radius:var(--radius);}
+#contactForm{transition:opacity .4s var(--ease), transform .4s var(--ease); opacity:1; transform:translateY(0) scale(1);}
+#contactForm.fade-out{opacity:0; transform:translateY(-10px) scale(.98); pointer-events:none;}
+.form-success{display:none; text-align:center; padding:60px 20px; border:1.3px dashed var(--hijau-terang); border-radius:var(--radius); opacity:0; transform:translateY(10px) scale(.98); transition:opacity .45s var(--ease), transform .45s var(--ease);}
 .form-success.show{display:block;}
+.form-success.show.in{opacity:1; transform:translateY(0) scale(1);}
+.form-success.fade-out{opacity:0; transform:translateY(-10px) scale(.98);}
 .form-success .check{width:52px; height:52px; border-radius:50%; border:1.5px solid var(--hijau-terang); color:var(--hijau-terang); display:flex; align-items:center; justify-content:center; margin:0 auto 18px; font-size:22px;}
 .form-success h4{margin-bottom:8px;}
-.form-success p{color:var(--hijau-soft); font-size:14px;}
+.form-success p{color:var(--hijau-soft); font-size:14px; margin-bottom:22px;}
+.form-success .btn{min-width:0;}
 
 .info-card{background:var(--hijau); color:var(--gading); padding:36px 32px; border-radius:var(--radius); height:fit-content;}
 .info-card .eyebrow{color:var(--emas-terang);}
@@ -2726,7 +2731,7 @@ body.editing .edit-badge{display:flex;}
           <div class="field" id="f-pesan"><label for="pesan">Pesan</label><textarea id="pesan" name="pesan" maxlength="400" placeholder="Tulis pesanmu di sini..."></textarea><div class="char-count"><span id="charNow">0</span>/400</div><div class="err">Pesan minimal 10 karakter.</div></div>
           <button type="submit" class="btn btn-solid" style="width:100%; justify-content:center;">Kirim Pesan</button>
         </form>
-        <div class="form-success" id="formSuccess"><div class="check">✓</div><h4>Pesan terkirim!</h4><p>Terima kasih, pesanmu telah tercatat. Tim OSIS akan merespons melalui email dalam 2–3 hari kerja.</p></div>
+        <div class="form-success" id="formSuccess"><div class="check">✓</div><h4>Pesan terkirim!</h4><p>Terima kasih, pesanmu telah tercatat. Tim OSIS akan merespons melalui email dalam 2–3 hari kerja.</p><button type="button" class="btn btn-ghost" id="sendAnotherBtn">Kirim pesan lain</button></div>
       </div>
       <div class="info-card reveal">
         <div class="eyebrow">Sekretariat</div>
@@ -4203,8 +4208,16 @@ document.getElementById('contactForm').addEventListener('submit', e => {
     .then(res => res.json())
     .then(data => {
       if (data.success) {
-        e.target.style.display = 'none';
-        document.getElementById('formSuccess').classList.add('show');
+        const formEl = e.target;
+        const successEl = document.getElementById('formSuccess');
+        formEl.classList.add('fade-out');
+        setTimeout(() => {
+          formEl.style.display = 'none';
+          successEl.classList.add('show');
+          // force reflow so the 'in' transition actually animates
+          void successEl.offsetWidth;
+          successEl.classList.add('in');
+        }, 400);
       } else {
         throw new Error(data.message || 'Gagal mengirim pesan');
       }
@@ -4218,6 +4231,33 @@ document.getElementById('contactForm').addEventListener('submit', e => {
     });
 });
 document.getElementById('pesan').addEventListener('input', e => { document.getElementById('charNow').textContent = e.target.value.length; });
+
+document.getElementById('sendAnotherBtn').addEventListener('click', () => {
+  const formEl = document.getElementById('contactForm');
+  const successEl = document.getElementById('formSuccess');
+
+  successEl.classList.add('fade-out');
+  setTimeout(() => {
+    successEl.classList.remove('show', 'in', 'fade-out');
+
+    // reset fields
+    formEl.reset();
+    formEl.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
+    document.getElementById('charNow').textContent = '0';
+
+    // reset custom subjek dropdown label + selected state
+    const subjekLabel = document.getElementById('subjekSelectedLabel');
+    if (subjekLabel) subjekLabel.textContent = 'Pilih subjek pesan';
+    document.querySelectorAll('#subjekDropdownList .subjek-dropdown-item').forEach(item => {
+      item.setAttribute('aria-selected', 'false');
+    });
+
+    formEl.style.display = '';
+    // force reflow so the fade-in transition actually animates
+    void formEl.offsetWidth;
+    formEl.classList.remove('fade-out');
+  }, 400);
+});
 
 // ==================== ADMIN SYSTEM ====================
 let isAdmin = false;

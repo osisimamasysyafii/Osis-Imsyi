@@ -466,6 +466,15 @@ body.editing .edit-badge{display:flex;}
 .admin-form-group input, .admin-form-group select, .admin-form-group textarea{width:100%; border:1.3px solid var(--garis); background:var(--gading); padding:10px 12px; font-family:inherit; font-size:14px; border-radius:var(--radius); color:var(--hijau);}
 .admin-form-group input:focus, .admin-form-group select:focus, .admin-form-group textarea:focus{outline:none; border-color:var(--hijau);}
 .admin-form-group textarea{resize:vertical; min-height:80px;}
+.color-swatch-picker{display:flex; flex-wrap:wrap; gap:10px;}
+.color-swatch-picker .swatch{width:40px; height:40px; border-radius:8px; border:2px solid rgba(19,42,76,0.12); cursor:pointer; padding:0; position:relative; transition:.2s var(--ease); box-shadow:0 1px 3px rgba(19,42,76,0.15);}
+.color-swatch-picker .swatch:hover{transform:translateY(-2px); box-shadow:0 4px 10px rgba(19,42,76,0.25);}
+.color-swatch-picker .swatch.active{border-color:var(--gading); box-shadow:0 0 0 2px var(--emas), 0 4px 10px rgba(19,42,76,0.25);}
+.color-swatch-picker .swatch.active::after{content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:var(--gading); font-size:15px; text-shadow:0 1px 2px rgba(0,0,0,.5);}
+.color-swatch-picker .swatch-custom{display:flex; align-items:center; justify-content:center; background:var(--gading); border-style:dashed; overflow:hidden;}
+.color-swatch-picker .swatch-custom input[type="color"]{position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; border:none; padding:0;}
+.color-swatch-picker .swatch-custom-icon{font-size:16px; pointer-events:none; position:relative; z-index:1;}
+.color-swatch-picker .swatch-custom.active .swatch-custom-icon{filter:drop-shadow(0 1px 2px rgba(0,0,0,.6));}
 
 /* Custom dropdown (menggantikan tampilan native <select> bawaan OS) */
 .admin-form-group select.cs-native-hidden{display:none;}
@@ -3683,9 +3692,23 @@ body.editing .edit-badge{display:flex;}
             <h4 style="margin-bottom:16px;">Tambah/Edit Galeri</h4>
             <input type="hidden" id="galId">
             <div class="admin-form-group"><label>Judul</label><input type="text" id="galTitle"></div>
-            <div class="admin-form-group"><label>Kategori</label><select id="galCat"><option value="pengajian">Pengajian</option><option value="muhadhoroh">Muhadhoroh</option><option value="roan">Ro'an</option><option value="tahfidz">Tahfidz</option><option value="phbi">PHBI</option></select></div>
+            <div class="admin-form-group"><label>Kategori</label><input type="text" id="galCat" list="galCatSuggest" placeholder="misal: pengajian, roan, tahfidz..."><datalist id="galCatSuggest"><option value="pengajian"><option value="muhadhoroh"><option value="roan"><option value="tahfidz"><option value="phbi"></datalist></div>
             <div class="admin-form-group"><label>URL Foto (Opsional, .jpg/.png)</label><input type="url" id="galImg" placeholder="https://contoh.com/foto.jpg"></div>
-            <div class="admin-form-group"><label>Warna Background (dipakai jika tanpa foto)</label><input type="color" id="galColor" value="#132A4C"></div>
+            <div class="admin-form-group">
+              <label>Warna Background (dipakai jika tanpa foto)</label>
+              <div class="color-swatch-picker" id="galColorPicker">
+                <button type="button" class="swatch" data-color="#132A4C" style="background:#132A4C" title="Navy"></button>
+                <button type="button" class="swatch" data-color="#1D3F70" style="background:#1D3F70" title="Navy Terang"></button>
+                <button type="button" class="swatch" data-color="#3E5A80" style="background:#3E5A80" title="Biru Kalem"></button>
+                <button type="button" class="swatch" data-color="#8C6423" style="background:#8C6423" title="Emas Tua"></button>
+                <button type="button" class="swatch" data-color="#B4863A" style="background:#B4863A" title="Emas"></button>
+                <button type="button" class="swatch" data-color="#9A4A2E" style="background:#9A4A2E" title="Terracotta"></button>
+                <label class="swatch swatch-custom" id="galColorCustomSwatch" title="Warna custom">
+                  <input type="color" id="galColor" value="#132A4C">
+                  <span class="swatch-custom-icon">🎨</span>
+                </label>
+              </div>
+            </div>
             <button class="btn btn-solid" onclick="saveGaleri()"><i class="fas fa-save"></i> Simpan</button>
             <button class="btn btn-ghost" onclick="hideGaleriForm()">Batal</button>
           </div>
@@ -4403,7 +4426,7 @@ function makeCustomSelect(selectEl) {
   });
 }
 document.addEventListener('click', () => { document.querySelectorAll('.cs-trigger.open').forEach(t => { t.classList.remove('open'); t.nextElementSibling && t.nextElementSibling.classList.remove('open'); }); });
-['progBidang', 'progStatus', 'strukturType', 'galCat'].forEach(id => { const el = document.getElementById(id); if (el) makeCustomSelect(el); });
+['progBidang', 'progStatus', 'strukturType'].forEach(id => { const el = document.getElementById(id); if (el) makeCustomSelect(el); });
 
 // Program CRUD
 function showProgramForm() { document.getElementById('programFormPanel').classList.add('active'); }
@@ -4448,11 +4471,33 @@ function editStruktur(i) {
 function deleteStruktur(i) { state.struktur.splice(i,1); saveState(); renderStruktur(); renderAdminLists(); showToast('Pengurus dihapus!'); }
 
 // Galeri CRUD
+function setGalColorActive(color) {
+  const norm = (color||'').toLowerCase();
+  const picker = document.getElementById('galColorPicker'); if(!picker) return;
+  let matched = false;
+  picker.querySelectorAll('.swatch[data-color]').forEach(sw => {
+    const isMatch = sw.dataset.color.toLowerCase() === norm;
+    sw.classList.toggle('active', isMatch);
+    if(isMatch) matched = true;
+  });
+  const customSwatch = document.getElementById('galColorCustomSwatch');
+  customSwatch.classList.toggle('active', !matched);
+  customSwatch.style.background = matched ? '' : (color || '#132A4C');
+}
+(function initGalColorPicker() {
+  const picker = document.getElementById('galColorPicker'); if(!picker) return;
+  const colorInput = document.getElementById('galColor');
+  picker.querySelectorAll('.swatch[data-color]').forEach(sw => {
+    sw.addEventListener('click', () => { colorInput.value = sw.dataset.color; setGalColorActive(sw.dataset.color); });
+  });
+  colorInput.addEventListener('input', () => setGalColorActive(colorInput.value));
+  setGalColorActive(colorInput.value);
+})();
 function showGaleriForm() { document.getElementById('galeriFormPanel').classList.add('active'); }
 function hideGaleriForm() { document.getElementById('galeriFormPanel').classList.remove('active'); document.getElementById('galId').value=''; }
 function saveGaleri() {
   const id = document.getElementById('galId').value;
-  const data = { title: document.getElementById('galTitle').value, cat: document.getElementById('galCat').value, color: document.getElementById('galColor').value, img: document.getElementById('galImg').value.trim() };
+  const data = { title: document.getElementById('galTitle').value, cat: document.getElementById('galCat').value.trim().toLowerCase(), color: document.getElementById('galColor').value, img: document.getElementById('galImg').value.trim() };
   if(id) { state.gallery[parseInt(id)] = {...state.gallery[parseInt(id)], ...data}; } 
   else { state.gallery.push(data); }
   saveState(); renderGallery(); renderAdminLists(); hideGaleriForm(); showToast('Galeri disimpan!');
@@ -4463,6 +4508,7 @@ function editGaleri(i) {
   document.getElementById('galTitle').value = g.title;
   document.getElementById('galCat').value = g.cat;
   document.getElementById('galColor').value = g.color;
+  setGalColorActive(g.color);
   document.getElementById('galImg').value = g.img || '';
   showGaleriForm();
 }

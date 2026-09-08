@@ -3684,7 +3684,8 @@ body.editing .edit-badge{display:flex;}
             <input type="hidden" id="galId">
             <div class="admin-form-group"><label>Judul</label><input type="text" id="galTitle"></div>
             <div class="admin-form-group"><label>Kategori</label><select id="galCat"><option value="pengajian">Pengajian</option><option value="muhadhoroh">Muhadhoroh</option><option value="roan">Ro'an</option><option value="tahfidz">Tahfidz</option><option value="phbi">PHBI</option></select></div>
-            <div class="admin-form-group"><label>Warna Background</label><input type="color" id="galColor" value="#132A4C"></div>
+            <div class="admin-form-group"><label>URL Foto (Opsional, .jpg/.png)</label><input type="url" id="galImg" placeholder="https://contoh.com/foto.jpg"></div>
+            <div class="admin-form-group"><label>Warna Background (dipakai jika tanpa foto)</label><input type="color" id="galColor" value="#132A4C"></div>
             <button class="btn btn-solid" onclick="saveGaleri()"><i class="fas fa-save"></i> Simpan</button>
             <button class="btn btn-ghost" onclick="hideGaleriForm()">Batal</button>
           </div>
@@ -3962,7 +3963,10 @@ function renderJadwal() {
 
 function renderGallery() {
   const c = document.getElementById('galleryGrid'); if(!c) return;
-  c.innerHTML = state.gallery.map((g,i) => `<div class="gallery-item" style="background:${g.color}" data-cat="${g.cat}" data-index="${i}"><div class="g-icon">✦</div><div class="g-cap"><div class="cat">${g.cat.charAt(0).toUpperCase()+g.cat.slice(1)}</div><div class="ttl">${g.title}</div></div></div>`).join('');
+  c.innerHTML = state.gallery.map((g,i) => {
+    const bg = g.img ? `background-image:url('${g.img}'); background-size:cover; background-position:center;` : `background:${g.color};`;
+    return `<div class="gallery-item" style="${bg}" data-cat="${g.cat}" data-index="${i}"><div class="g-icon">✦</div><div class="g-cap"><div class="cat">${g.cat.charAt(0).toUpperCase()+g.cat.slice(1)}</div><div class="ttl">${g.title}</div></div></div>`;
+  }).join('');
   bindGallery();
 }
 
@@ -4076,7 +4080,9 @@ let lbIndex = 0;
 function openLightbox(i) {
   lbIndex = i; const g = state.gallery[i];
   if(!g) return;
-  document.getElementById('lbFrame').style.background = g.color;
+  const frame = document.getElementById('lbFrame');
+  if(g.img) { frame.style.background = ''; frame.style.backgroundImage = `url('${g.img}')`; frame.style.backgroundSize = 'cover'; frame.style.backgroundPosition = 'center'; }
+  else { frame.style.backgroundImage = ''; frame.style.background = g.color; }
   document.getElementById('lbCat').textContent = g.cat;
   document.getElementById('lbTitle').textContent = g.title;
   document.getElementById('lightbox').classList.add('open');
@@ -4446,7 +4452,7 @@ function showGaleriForm() { document.getElementById('galeriFormPanel').classList
 function hideGaleriForm() { document.getElementById('galeriFormPanel').classList.remove('active'); document.getElementById('galId').value=''; }
 function saveGaleri() {
   const id = document.getElementById('galId').value;
-  const data = { title: document.getElementById('galTitle').value, cat: document.getElementById('galCat').value, color: document.getElementById('galColor').value };
+  const data = { title: document.getElementById('galTitle').value, cat: document.getElementById('galCat').value, color: document.getElementById('galColor').value, img: document.getElementById('galImg').value.trim() };
   if(id) { state.gallery[parseInt(id)] = {...state.gallery[parseInt(id)], ...data}; } 
   else { state.gallery.push(data); }
   saveState(); renderGallery(); renderAdminLists(); hideGaleriForm(); showToast('Galeri disimpan!');
@@ -4457,6 +4463,7 @@ function editGaleri(i) {
   document.getElementById('galTitle').value = g.title;
   document.getElementById('galCat').value = g.cat;
   document.getElementById('galColor').value = g.color;
+  document.getElementById('galImg').value = g.img || '';
   showGaleriForm();
 }
 function deleteGaleri(i) { state.gallery.splice(i,1); saveState(); renderGallery(); renderAdminLists(); showToast('Galeri dihapus!'); }

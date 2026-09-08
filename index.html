@@ -466,6 +466,8 @@ body.editing .edit-badge{display:flex;}
 .admin-form-group input, .admin-form-group select, .admin-form-group textarea{width:100%; border:1.3px solid var(--garis); background:var(--gading); padding:10px 12px; font-family:inherit; font-size:14px; border-radius:var(--radius); color:var(--hijau);}
 .admin-form-group input:focus, .admin-form-group select:focus, .admin-form-group textarea:focus{outline:none; border-color:var(--hijau);}
 .admin-form-group textarea{resize:vertical; min-height:80px;}
+#galCat::-webkit-calendar-picker-indicator{display:none !important; opacity:0 !important; -webkit-appearance:none !important;}
+#galCat::-webkit-list-button{display:none !important;}
 .color-swatch-picker{display:flex; flex-wrap:wrap; gap:10px;}
 .color-swatch-picker .swatch{width:40px; height:40px; border-radius:8px; border:2px solid rgba(19,42,76,0.12); cursor:pointer; padding:0; position:relative; transition:.2s var(--ease); box-shadow:0 1px 3px rgba(19,42,76,0.15);}
 .color-swatch-picker .swatch:hover{transform:translateY(-2px); box-shadow:0 4px 10px rgba(19,42,76,0.25);}
@@ -4104,8 +4106,9 @@ function openLightbox(i) {
   lbIndex = i; const g = state.gallery[i];
   if(!g) return;
   const frame = document.getElementById('lbFrame');
-  if(g.img) { frame.style.background = ''; frame.style.backgroundImage = `url('${g.img}')`; frame.style.backgroundSize = 'cover'; frame.style.backgroundPosition = 'center'; }
-  else { frame.style.backgroundImage = ''; frame.style.background = g.color; }
+  const icon = frame.querySelector('.g-icon');
+  if(g.img) { frame.style.background = ''; frame.style.backgroundImage = `url('${g.img}')`; frame.style.backgroundSize = 'cover'; frame.style.backgroundPosition = 'center'; if(icon) icon.style.display = 'none'; }
+  else { frame.style.backgroundImage = ''; frame.style.background = g.color; if(icon) icon.style.display = ''; }
   document.getElementById('lbCat').textContent = g.cat;
   document.getElementById('lbTitle').textContent = g.title;
   document.getElementById('lightbox').classList.add('open');
